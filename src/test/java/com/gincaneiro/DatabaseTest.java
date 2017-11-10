@@ -14,12 +14,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import javax.transaction.Transactional;
-import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.jdbc.Sql;
 
 /**
  *
@@ -30,7 +29,7 @@ import org.springframework.test.context.jdbc.Sql;
 @WebAppConfiguration
 @Transactional
 @DirtiesContext(classMode = ClassMode.AFTER_EACH_TEST_METHOD)
-@SpringApplicationConfiguration(classes = SiteApplication.class)
+@SpringBootTest
 @ActiveProfiles("test")
 public @interface DatabaseTest {
     

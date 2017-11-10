@@ -4,6 +4,7 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+        jcenter()
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -20,13 +21,23 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-	mavenCentral()
+    jcenter()
+    maven { url 'http://repo.spring.io/milestone' }
+    maven { url 'http://repo.spring.io/snapshot' }
+    maven { url "http://repo.spring.io/release" }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases' }
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven { url 'http://repo.maven.apache.org/maven2' }
+    maven { url "http://jaspersoft.artifactoryonline.com/jaspersoft/third-party-ce-artifacts/" }
+    maven { url "http://jasperreports.sourceforge.net/maven2/" }
 }
 
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.boot:spring-boot-autoconfigure')
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.data:spring-data-commons')
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-validation')
 	compile('org.springframework.boot:spring-boot-starter-web')
@@ -35,4 +46,14 @@ dependencies {
 	runtime('org.postgresql:postgresql')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('org.springframework.security:spring-security-test')
+    testCompile('org.mockito:mockito-core')
+    testCompile('com.jayway.jsonpath:json-path-assert')
+    testCompile group: 'com.jayway.jsonpath', name: 'json-path'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testCompile group: 'org.springframework.boot', name: 'spring-boot-starter-jetty'
+    testCompile group: 'org.assertj', name: 'assertj-core-java8', version: assertj_core_version
+    testCompile group: 'junit', name: 'junit', version: 4.12
+    testCompile group: 'org.mockito', name: 'mockito-core'
+    testCompile group: 'org.hamcrest', name: 'hamcrest-library'
+    testCompile group: 'com.h2database', name: 'h2'
 }

@@ -78,38 +78,38 @@ public class TarefaServiceIT {
 
     @Test
     public void testEdit() {
-        Tarefa t = tarefaService.get(1L, 1L);
+        Tarefa t = tarefaService.get(g.getId(), 1L);
         t.setNome("modificada");
         tarefaService.edit(t);
-        assertThat(tarefaService.get(1L, 1L).getNome(),equalTo("modificada"));
+        assertThat(tarefaService.get(g.getId(), 1L).getNome(),equalTo("modificada"));
     }
     @Test
     public void testSave() throws Exception {
         Tarefa t = new Tarefa(99L, "teste", "teste", "teste", g, a, c, true,
                 LocalDateTime.now());
         tarefaService.saveTarefa(t);
-        assertThat(tarefaService.get(1L,99L).getNome(),equalTo("teste"));
+        assertThat(tarefaService.get(g.getId(),99L).getNome(),equalTo("teste"));
     }
     @Test(expected=Exception.class)
     public void testSaveFail() throws Exception {
-        Tarefa t = tarefaService.get(1L,1L);
+        Tarefa t = tarefaService.get(g.getId(),1L);
         tarefaService.saveTarefa(t);
     }
 
     @Test
     public void testFindAll() {
-        assertThat(tarefaService.findAll(1L), hasSize(3));
+        assertThat(tarefaService.findAll(g.getId()), hasSize(3));
     }
     @Test
     public void testFindAllVisible_Long() {
-        assertThat(tarefaService.findAllVisible(1L), hasSize(3));
+        assertThat(tarefaService.findAllVisible(g.getId()), hasSize(3));
     }
 
     @Test
     public void testFindAllVisible_Long_Pageable() {
         Sort s = new Sort(Sort.Direction.ASC, "nome");
         Pageable page = new PageRequest(0,10, s);
-        List<Tarefa> l = tarefaService.findAllVisible(1L,page);
+        List<Tarefa> l = tarefaService.findAllVisible(g.getId(),page);
         assertThat(l, hasSize(3));
         assertThat("é do mesmo horário que a t1, mas vem depois por causa do nome",
                    l.get(0), equalTo(t3));
