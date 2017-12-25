@@ -40,11 +40,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Override
     protected void configure(HttpSecurity http) throws Exception { // NOSONAR - spring throws this
-        http.authorizeRequests()
+        http
+                .csrf().disable()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-//                .antMatchers("/**").authenticated()
-        ;
-
+                .antMatchers("/**").authenticated();
+//        block everything else
 //        http.authorizeRequests()
 //                .antMatchers(HttpMethod.POST, "/**")
 //                .denyAll().antMatchers( "/**").denyAll();

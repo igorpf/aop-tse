@@ -22,6 +22,6 @@ public class AuthenticationMocks {
     public static Authentication payingAuthentication() {
         GrantedAuthority payingAuthority = new SimpleGrantedAuthority("PAYING");
         User payingUser = new User("user", "password", Arrays.asList(payingAuthority));
-        return new TestingAuthenticationToken(payingUser, null, "ROLE_ADMIN");
+        return new TestingAuthenticationToken(payingUser, null, "ROLE_PAYING");
     }
 }
