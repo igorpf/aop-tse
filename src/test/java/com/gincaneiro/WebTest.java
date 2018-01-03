@@ -14,8 +14,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.gincaneiro.config.AspectConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
@@ -27,6 +29,7 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration
 @SpringBootTest
 @ActiveProfiles("test")
+@ContextConfiguration(classes={AspectConfiguration.class, AppConfig.class})
 public @interface WebTest {
  // empty
 }

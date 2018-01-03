@@ -20,8 +20,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpSession;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.test.web.servlet.MockMvc;
@@ -30,10 +28,11 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.servlet.Filter;
 
+import static com.gincaneiro.TestUtils.setPayingUserAuthentication;
+import static com.gincaneiro.TestUtils.setRegularUserAuthentication;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -51,7 +50,7 @@ public class TarefaControllerTest {
     
     @Mock
     private TarefaService service;
-    
+
     @Autowired
     @InjectMocks
     private TarefaController controller;
@@ -66,14 +65,6 @@ public class TarefaControllerTest {
     
     private Tarefa t;
 
-    protected void setRegularUserAuthentication() {
-        SecurityContextHolder.getContext().setAuthentication(AuthenticationMocks.regularAuthentication());
-    }
-
-    protected void setPayingUserAuthentication() {
-        SecurityContextHolder.getContext().setAuthentication(AuthenticationMocks.payingAuthentication());
-    }
-    
     @Before
     public void setUp() {
         mockMvc = MockMvcBuilders
@@ -90,23 +81,26 @@ public class TarefaControllerTest {
         t.setId(1L);
         when(service.get(1L,t.getId())).thenReturn(t);
         when(service.exists(1L,t.getId())).thenReturn(false);
-        setRegularUserAuthentication();
+        setPayingUserAuthentication();
     }
 
     @Test
     public void testGet() throws Exception {
-        setPayingUserAuthentication();
         mockMvc.perform(get("/tarefa/1/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(t.getId().intValue())))
                 .andExpect(jsonPath("$.nome", equalTo(t.getNome())))
                 .andExpect(jsonPath("$.corpo", equalTo(t.getCorpo())));
     }
+
     @Test
     public void testGetNoAuthority() throws Exception {
+        setRegularUserAuthentication();
         mockMvc.perform(get("/tarefa/1/1").accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden());
+        verifyZeroInteractions(service);
     }
+
     @Test
     public void testSave() throws Exception {
 
@@ -122,6 +116,7 @@ public class TarefaControllerTest {
                 .andExpect(status().isOk());
         verify(service).saveTarefa(any());
     }
+
     /**
      * Test if the @Valid annotation works
      * @throws Exception 
