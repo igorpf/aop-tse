@@ -13,7 +13,7 @@ import com.gincaneiro.services.GenericService;
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +28,7 @@ public abstract class GenericCrudController<T> {
 
     public abstract GenericService<T> getService();
 
+    @Secured("ROLE_PAYING")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
     public ResponseEntity<T> get(@PathVariable("id") Long id) {
         T t = getService().get(id);
@@ -39,6 +40,7 @@ public abstract class GenericCrudController<T> {
         return new ResponseEntity<>(t, HttpStatus.OK);
     }
 
+    @Secured("ROLE_PAYING")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity<String> save(@Valid @RequestBody T t, BindingResult result) {
         if(result.hasErrors())
@@ -48,6 +50,7 @@ public abstract class GenericCrudController<T> {
         return new ResponseEntity<>(null, HttpStatus.OK);
     }
 
+    @Secured("ROLE_PAYING")
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<String> delete(@PathVariable("id") Long id, BindingResult result) {
         getService().delete(id);

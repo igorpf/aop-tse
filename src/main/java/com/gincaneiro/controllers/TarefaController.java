@@ -48,6 +48,7 @@ public class TarefaController {
         return new ResponseEntity<>(t, HttpStatus.OK);
     }
 
+    @Secured("ROLE_PAYING")
     @RequestMapping(value = "/save", method = RequestMethod.POST)
     public ResponseEntity<?> save(@Valid @RequestBody Tarefa t, BindingResult result) {
         try {
